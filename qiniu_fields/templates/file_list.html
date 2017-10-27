@@ -83,8 +83,8 @@
 
                         var res = $.parseJSON(info), url = res.url || up.getOption('domain') + encodeURI(res.key),
                             textEle = $('#id-{{ widget.name }}');
-                        if (textEle.val()) {
-                            textEle.val(textEle.val() + ',' + url)
+                        if (textEle.val().trim()) {
+                            textEle.val(textEle.val().trim().replace(/\n/g, '').replace(/\t/g, '') + ',' + url)
                         } else {
                             textEle.val(url)
                         }

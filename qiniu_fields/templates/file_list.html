@@ -1,8 +1,6 @@
 <div id="{{ widget.name }}-container">
     <textarea name="{{ widget.name }}" id="id-{{ widget.name }}" cols="{{ widget.attrs.cols }}" maxlength="{{ widget.attrs.maxlength }}"
-              rows="{{ widget.attrs.rows }}" class="textarea-field form-control" style="display: inline-block; width: 80%">
-        {% if widget.value %}{{ widget.value }}{% endif %}
-    </textarea>
+              rows="{{ widget.attrs.rows }}" class="textarea-field form-control" style="display: inline-block; width: 80%">{% if widget.value %}{{ widget.value }}{% endif %}</textarea>
     <span class="default btn btn-primary" id="btn-{{ widget.name }}-uploader">选择文件</span>
 </div>
 

@@ -45,6 +45,11 @@ class QiniuFileListWidget(forms.Textarea):
             final_attrs.update(attrs)
         super(QiniuFileListWidget, self).__init__(attrs=final_attrs)
 
+    def get_context(self, name, value, attrs):
+        context = super(QiniuFileListWidget, self).get_context(name, value, attrs)
+        context['widget']['value_list'] = context['widget']['value'].split(',') if context['widget']['value'] else []
+        return context
+
     @property
     def media(self):
         return forms.Media(js=('qiniu_fields/plupload/plupload.full.min.js', 'qiniu_fields/plupload/i18n/zh_CN.js',

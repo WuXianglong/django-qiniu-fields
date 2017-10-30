@@ -1,7 +1,10 @@
 <div id="{{ widget.name }}-container">
-    <p class="url" style="display: {% if widget.value %}block{% else %}none{% endif %}">{{ current_label }} <a href="{{ widget.href }}">{{ widget.value }}</a><br /></p>
-    <span class="default btn btn-primary" id="btn-{{ widget.name }}-uploader">选择文件</span>
-
+    <p class="url">
+        <a href="{{ widget.href }}" target="_blank" style="text-decoration: none">
+            <img src="{% if widget.value %}{{ widget.value }}{% else %}/static/img/img_default.png{% endif %}" style="display: inline-block; width: 50px">
+        </a>
+        <span class="default btn btn-primary" id="btn-{{ widget.name }}-uploader" style="margin-left: 10px">选择文件</span>
+    </p>
     <input type="hidden" id="id-{{ widget.name }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %} />
 </div>
 
@@ -81,8 +84,8 @@
                         $('#fsUploadProgress').html('');
 
                         var res = $.parseJSON(info), url = res.url || up.getOption('domain') + encodeURI(res.key);
-                        $('#{{ widget.name }}-container p').css('display', 'block');
-                        $('#{{ widget.name }}-container a').text(url).attr('href', url);
+                        $('#{{ widget.name }}-container a').attr('href', url);
+                        $('#{{ widget.name }}-container img').attr('src', url).css('display', 'inline-block');
                         $('#id-{{ widget.name }}').val(url);
                     },
                     'UploadComplete': function() {  // 队列文件处理完毕后,处理相关的事情

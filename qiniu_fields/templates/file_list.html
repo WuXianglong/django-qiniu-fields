@@ -1,7 +1,13 @@
 <div id="{{ widget.name }}-container">
-    <textarea name="{{ widget.name }}" id="id-{{ widget.name }}" cols="{{ widget.attrs.cols }}" maxlength="{{ widget.attrs.maxlength }}"
-              rows="{{ widget.attrs.rows }}" class="textarea-field form-control" style="display: inline-block; width: 80%">{% if widget.value %}{{ widget.value }}{% endif %}</textarea>
+    <p class="img-list">
+        {% for img_url in widget.value_list %}
+            <a href="{{ img_url }}" target="_blank">
+                <img src="{{ img_url }}" style="width: 100px; display: inline-block; margin-right: 10px">
+            </a>
+        {% endfor %}
+    </p>
     <span class="default btn btn-primary" id="btn-{{ widget.name }}-uploader">选择文件</span>
+    <input type="hidden" id="id-{{ widget.name }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %} />
 </div>
 
 <script type="text/javascript">
@@ -86,6 +92,8 @@
                         } else {
                             textEle.val(url)
                         }
+                        $('#{{ widget.name }}-container p.img-list').append('<a href="' + url + '" target="_blank">' +
+                            '<img src="' + url + '" style="width: 100px; display: inline-block; margin-right: 10px"></a>');
                     },
                     'UploadComplete': function() {  // 队列文件处理完毕后,处理相关的事情
                         // alert('上传文件成功!');

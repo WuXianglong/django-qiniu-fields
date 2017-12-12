@@ -1,9 +1,10 @@
 <div id="{{ widget.name }}-container">
     <p class="img-list">
         {% for img_url in widget.value_list %}
-            <a href="{{ img_url }}" target="_blank">
-                <img src="{{ img_url }}" style="width: 100px; display: inline-block; margin-right: 10px">
+            <a href="{{ img_url }}" target="_blank" style="text-decoration: none">
+                <img src="{{ img_url }}" style="width: 100px; display: inline-block">
             </a>
+            <a href="javascript:;" onclick="removeImg(this);" style="display:inline-block;margin-right: 10px"><i class="fa fa-remove"></i></a>
         {% endfor %}
     </p>
     <span class="default btn btn-primary" id="btn-{{ widget.name }}-uploader">选择文件</span>
@@ -37,6 +38,17 @@
             }
         }
     }, prefix = '{{ widget.attrs.prefix }}', file_type = '{{ widget.attrs.file_type }}';
+    var removeImg = function (imgEle) {
+        var imgHref = $(imgEle).prev().attr('href'), textEle = $('#id-{{ widget.name }}'),
+            textContent = textEle.val().trim().replace(/\n/g, '').replace(/\t/g, '');
+
+        textContent = textContent.replace(imgHref, '');
+        if (textContent.startsWith(',')) textContent = textContent.slice(1, textContent.length);
+        if (textContent.endsWith(',')) textContent = textContent.slice(0, textContent.length - 1);
+        textEle.val(textContent);
+        $(imgEle).prev().remove();
+        $(imgEle).remove();
+    };
 
     addLoadEvent(function () {
         (function ($) {
@@ -92,8 +104,9 @@
                         } else {
                             textEle.val(url)
                         }
-                        $('#{{ widget.name }}-container p.img-list').append('<a href="' + url + '" target="_blank">' +
-                            '<img src="' + url + '" style="width: 100px; display: inline-block; margin-right: 10px"></a>');
+                        $('#{{ widget.name }}-container p.img-list').append('<a href="' + url + '" target="_blank" style="text-decoration: none">' +
+                            '<img src="' + url + '" style="width: 100px; display: inline-block"></a>'
+                            + '<a href="javascript:;" onclick="removeImg(this);" style="display: inline-block;margin-right: 10px"><i class="fa fa-remove"></i></a>');
                     },
                     'UploadComplete': function() {  // 队列文件处理完毕后,处理相关的事情
                         // alert('上传文件成功!');

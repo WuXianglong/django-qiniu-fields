@@ -4,6 +4,9 @@
             <img src="{% if widget.value %}{{ widget.value }}{% else %}/static/img/img_default.png{% endif %}" style="display: inline-block; width: 50px">
         </a>
         <span class="default btn btn-primary" id="btn-{{ widget.name }}-uploader" style="margin-left: 10px">选择文件</span>
+        {% if not widget.required %}
+            <span class="default btn btn-danger btn-clear pull-right" onclick="removeImage()"><i class="fa fa-trash-o"></i></span>
+        {% endif %}
     </p>
     <input type="hidden" id="id-{{ widget.name }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %} />
 </div>
@@ -34,7 +37,12 @@
                 func();
             }
         }
-    }, prefix = '{{ widget.attrs.prefix }}', file_type = '{{ widget.attrs.file_type }}';
+    };
+    var removeImage = function () {
+        $('#{{ widget.name }}-container a').attr('href', '');
+        $('#{{ widget.name }}-container img').attr('src', '/static/img/img_default.png').css('display', 'inline-block');
+        $('#id-{{ widget.name }}').val('');
+    };
 
     addLoadEvent(function () {
         (function ($) {
@@ -56,7 +64,7 @@
                 auto_start: true,  // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
                 filters: {
                     max_file_size: '100mb',
-                    mime_types: [MIME_TYPES[file_type]],
+                    mime_types: [MIME_TYPES['{{ widget.attrs.file_type }}']],
                     prevent_duplicates: true  // 不允许队列中存在重复文件
                 },
 
@@ -94,7 +102,7 @@
                     'Key': function (up, file) {
                         var ext = getFileExtension(file.name),
                             name = ext ? file.id + '.' + ext : file.id;
-                        return prefix + '/' + name;
+                        return '{{ widget.attrs.prefix }}/' + name;
                     },
                     'Error': function(up, err, errTip) {  // 上传出错时,处理相关的事情
                         alert('上传文件失败：' + err.message);

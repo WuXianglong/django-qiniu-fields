@@ -5,7 +5,7 @@
         </a>
         <span class="default btn btn-primary" id="btn-{{ widget.name }}-uploader" style="margin-left: 10px">选择文件</span>
         {% if not widget.required %}
-            <span class="default btn btn-danger btn-clear pull-right" onclick="removeImage()"><i class="fa fa-trash-o"></i></span>
+            <span class="default btn btn-danger btn-clear pull-right" onclick="removeImage(this)"><i class="fa fa-trash-o"></i></span>
         {% endif %}
     </p>
     <input type="hidden" id="id-{{ widget.name }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %} />
@@ -38,10 +38,11 @@
             }
         }
     };
-    var removeImage = function () {
-        $('#{{ widget.name }}-container a').attr('href', '');
-        $('#{{ widget.name }}-container img').attr('src', '/static/img/img_default.png').css('display', 'inline-block');
-        $('#id-{{ widget.name }}').val('');
+    var removeImage = function (e) {
+        var container = $(e).parent().parent();
+        container.find('p.url a').attr('href', '');
+        container.find('p.url img').attr('src', '/static/img/img_default.png').css('display', 'inline-block');
+        container.find('input').val('');
     };
 
     addLoadEvent(function () {
